@@ -81,6 +81,7 @@ namespace solution {
     int P[SIZE];
     int T[SIZE][DEPTH];
     int TC[SIZE];
+
     
     class Solution: public ISolution {
     public:
