@@ -87,8 +87,8 @@ namespace solution {
 // @snippet<sh19910711/contest-base:solution/consts-area.cpp>
 namespace solution {
   // constant vars
-  const Int SIZE = 11;
-  const Int NONE = -1;
+  const Int SIZE = 100;
+  const Int NONE = -1000;
 }
 
 // @snippet<sh19910711/contest-base:solution/namespace-area.cpp>
@@ -179,28 +179,42 @@ namespace solution {
     }
 
     bool rec( Int sr, Int sc ) {
-      if ( sr >= in->N ) { 
+      if ( sr >= in->N ) {
+        if ( sc > 0 ) {
+          for ( int r = 0; r < in->N; ++ r ) {
+            if ( in->EG[r][sc - 1] < D[r][sc - 1] )
+              return false;
+          }
+          // cout << "D: " << endl; show_table(D);
+        }
         return rec(0, sc + 1);
       }
       if ( sc > in->M ) {
+        if ( mines <= limit && remains == 0 ) {
+          // cout << "clear info: " << mines << " | " << remains << endl;
+          // cout << "clear d: " << endl; show_table(D); show_table(in->EG);
+        }
         // cout << "mines = " << mines << endl;
         // cout << "D: " << endl;
         // cout << "mines = " << mines << " / remains = " << remains << endl;
-        // show_table(D);
-        return mines == limit && remains == 0;
+        return mines <= limit && remains == 0;
       }
 
       // put if can put
       // cout << "@rec: sr = " << sr << ", " << sc << endl;
       // show_table(D);
       if ( remains && mines < limit && can_put(sr, sc) ) {
-        // cout << "@rec: can_put: " << sr << ", " << sc << endl;
+        // cout << "@rec: can_put: " << sr << ", " << sc << " | mines = " << mines << ", remains = " << remains << endl;
+        // show_table(D);
         put(sr, sc, 1);
+        // show_table(D);
+        // cout << "after put" << endl << endl;
         mines ++;
         if ( rec(sr + 1, sc) )
           return true;
         mines --;
         put(sr, sc, -1);
+        // cout << "@rec: unset: " << sr << ", " << sc << " | mines = " << mines << ", remains = " << remains << endl;
       }
       // no put
       return rec(sr + 1, sc);
@@ -232,6 +246,8 @@ namespace solution {
       // cout << endl;
       for ( limit = limit_start; ; ++ limit ) {
         // cout << "limit = " << limit << endl;
+        // cout << "mines = " << mines << endl;
+        // cout << "remains = " << remains << endl;
         if ( rec(0, 0) ) {
           return limit;
         }
