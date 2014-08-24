@@ -29,7 +29,7 @@ void func( const int& n, const int& f = -1 ) {
   int mi = 50001, ma = -1;
   do {
     const auto& b = gen_b(a, n);
-    if ( f == -1 || b[n - 1] == f ) { cout << "a = "; print_vector(a); cout << "b = "; print_vector(b); cout << endl; }
+    // if ( f == -1 || b[n - 1] == f ) { cout << "a = "; print_vector(a); cout << "b = "; print_vector(b); cout << endl; }
     mi = min(mi, b[n - 1]);
     ma = max(ma, b[n - 1]);
   } while( next_permutation(begin(a), end(a)) );
@@ -37,7 +37,7 @@ void func( const int& n, const int& f = -1 ) {
 }
 
 int main() {
-  func(4);
+  func(12);
   return 0;
   for ( int i = 1; i <= 7; ++ i ) {
     func(i);
